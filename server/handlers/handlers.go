@@ -17,9 +17,10 @@ type request struct {
 }
 
 type response struct {
-	Status  string `json:"status"`
-	Details string `json:"details,omitempty"`
-	Link    string `json:"link,omitempty"`
+	Status  string         `json:"status"`
+	Details string         `json:"details,omitempty"`
+	Link    string         `json:"link,omitempty"`
+	Secret  *models.Secret `json:"secret,omitempty"`
 }
 type ServiceHandler struct {
 	services db.SecurelinkDB
@@ -65,6 +66,7 @@ func (s *ServiceHandler) GenerateLink(c *gin.Context) {
 	}
 	responseBody.Status = "Success"
 	responseBody.Link = "/" + id
+	responseBody.Secret = &secret
 
 	c.JSON(http.StatusOK, responseBody)
 }
@@ -89,6 +91,9 @@ func (s *ServiceHandler) GetSecret(c *gin.Context) {
 
 	//spin up a goroutine to update the view status
 	go func() {
+		if !secret.One_time {
+			return
+		}
 		err := s.services.UpdateViewStatus(secret.Id)
 		if err != nil {
 			fmt.Println("error updating secret status : id -> ", secret.Id)
@@ -96,7 +101,7 @@ func (s *ServiceHandler) GetSecret(c *gin.Context) {
 	}()
 
 	responseBody.Status = "Success"
-	responseBody.Details = secret.Secret
+	responseBody.Secret = secret
 	c.JSON(http.StatusFound, responseBody)
 }
 
@@ -111,8 +116,7 @@ func (s *ServiceHandler) ShowStatus(c *gin.Context) {
 		return
 	}
 	responseBody.Status = "Success"
-	c.JSON(http.StatusFound, gin.H{
-		"status":  responseBody,
-		"details": secret,
-	})
+	responseBody.Secret = secret
+	secret.Secret = ""
+	c.JSON(http.StatusFound, responseBody)
 }

@@ -12,12 +12,12 @@ type Config struct {
 }
 
 type Secret struct {
-	Id        string
-	Secret    string
-	CreatedAt time.Time
-	ExpiresAt time.Time
-	One_time  bool
-	Viewed    bool
+	Id        string    `json:"id"`
+	Secret    string    `json:"secret,omitempty"`
+	CreatedAt time.Time `json:"created_at,omitempty"`
+	ExpiresAt time.Time `json:"expires_at,omitempty"`
+	One_time  bool      `json:"one_time"`
+	Viewed    bool      `json:"viewed"`
 }
 
 // CREATE TABLE secrets (
