@@ -6,4 +6,5 @@ type SecurelinkDB interface {
 	GetSecret(id string) (*models.Secret, error)
 	CreateSecret(m models.Secret) error
 	DeleteSecret(id string) error
+	UpdateViewStatus(id string) error
 }
