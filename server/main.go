@@ -8,6 +8,7 @@ import (
 	"github.com/0xDevvvvv/SecureLink/config"
 	"github.com/0xDevvvvv/SecureLink/handlers"
 	"github.com/0xDevvvvv/SecureLink/services"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
@@ -34,6 +35,11 @@ func main() {
 
 	//set up router
 	router := gin.Default()
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:" + config.AppConfig.CLIENTPORT} //this is because my client isnt running on default port and its localhost
+
+	router.Use(cors.New(corsConfig))
 
 	router.POST("/generate", handlers.GenerateLink)
 	router.GET("/s/:id", handlers.GetSecret)

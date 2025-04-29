@@ -9,6 +9,7 @@ type Config struct {
 	SERVERPORT string `env:"SERVERPORT"`
 	DBPORT     string `env:"DBPORT"`
 	DBHOST     string `env:"DBHOST"`
+	CLIENTPORT string `env:"CLIENTPORT"`
 }
 
 type Secret struct {

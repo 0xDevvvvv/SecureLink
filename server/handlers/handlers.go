@@ -65,7 +65,7 @@ func (s *ServiceHandler) GenerateLink(c *gin.Context) {
 		return
 	}
 	responseBody.Status = "Success"
-	responseBody.Link = "/" + id
+	responseBody.Link = id
 	responseBody.Secret = &secret
 
 	c.JSON(http.StatusOK, responseBody)
@@ -102,7 +102,7 @@ func (s *ServiceHandler) GetSecret(c *gin.Context) {
 
 	responseBody.Status = "Success"
 	responseBody.Secret = secret
-	c.JSON(http.StatusFound, responseBody)
+	c.JSON(http.StatusFound, gin.H{"status": responseBody.Status, "secret": responseBody.Secret.Secret})
 }
 
 func (s *ServiceHandler) ShowStatus(c *gin.Context) {
