@@ -12,8 +12,8 @@ export default function Navbar() {
           Securelink
         </span>
         <div className="sm:flex hidden m-3 items-center justify-between gap-5">
-          <span className="md:text-md lg:text-lg hover:cursor-pointer hover:underline">About</span>
-          <span className="md:text-md lg:text-lg hover:cursor-pointer hover:underline">Github</span>
+          <a href="#about" className="md:text-md lg:text-lg hover:cursor-pointer hover:underline">About</a>
+          <a href="https://github.com/0xDevvvvv/SecureLink" target="_blank" className="md:text-md lg:text-lg hover:cursor-pointer hover:underline">Github</a>
         </div>
         <div className="flex sm:hidden m-3 items-center justify-between gap-5">
           <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle Menu">
