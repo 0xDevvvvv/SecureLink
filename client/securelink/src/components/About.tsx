@@ -2,7 +2,7 @@
 
 export default function About() {
   return (
-    <div id="about" className="p-6 transition-all ease-in-out bg-white rounded-xl shadow my-10 max-w-3xl mx-auto text-gray-700 leading-relaxed">
+    <div id="about" className="p-6 transition-all ease-in-out bg-white rounded-xl  my-10 max-w-3xl mx-auto text-gray-700 leading-relaxed">
     <h2 className="text-2xl font-bold text-red-700 mb-4">About SecureLink</h2>
     <p className="mb-4">
         <strong>SecureLink</strong> is a privacy-focused platform designed to share sensitive information securely and temporarily. Whether it's credentials, personal notes, or private messages, SecureLink ensures that your data is encrypted, stored briefly, and can be accessed only once — making it ideal for one-time sharing.
