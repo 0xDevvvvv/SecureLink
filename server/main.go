@@ -8,6 +8,7 @@ import (
 	"github.com/0xDevvvvv/SecureLink/config"
 	"github.com/0xDevvvvv/SecureLink/handlers"
 	"github.com/0xDevvvvv/SecureLink/services"
+	"github.com/0xDevvvvv/SecureLink/utils"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -17,7 +18,7 @@ func main() {
 
 	//loads the environment variables
 	config.LoadConfig()
-
+	utils.Encrypt("hiii")
 	//set up db connection string
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		config.AppConfig.DBHOST, config.AppConfig.DBPORT, config.AppConfig.DBUSER, config.AppConfig.DBPASSWORD, config.AppConfig.DBNAME)

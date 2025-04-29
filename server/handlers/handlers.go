@@ -7,6 +7,7 @@ import (
 
 	"github.com/0xDevvvvv/SecureLink/db"
 	"github.com/0xDevvvvv/SecureLink/models"
+	"github.com/0xDevvvvv/SecureLink/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -46,10 +47,16 @@ func (s *ServiceHandler) GenerateLink(c *gin.Context) {
 
 	//create a new uuid
 	id := uuid.NewString()
-
+	message, err := utils.Encrypt(requestJSON.Secret)
+	if err != nil {
+		responseBody.Status = "Failure"
+		responseBody.Details = "Error Creating a new secret"
+		c.JSON(http.StatusBadRequest, responseBody)
+		return
+	}
 	secret := models.Secret{
 		Id:        id,
-		Secret:    requestJSON.Secret,
+		Secret:    message,
 		CreatedAt: time.Now().UTC(),
 		//set expire time n minutes from now , as given in the request
 		ExpiresAt: time.Now().UTC().Add(time.Minute * time.Duration(requestJSON.ExpiresIn)),
@@ -57,7 +64,7 @@ func (s *ServiceHandler) GenerateLink(c *gin.Context) {
 		Viewed:    false,
 	}
 
-	err := s.services.CreateSecret(secret)
+	err = s.services.CreateSecret(secret)
 	if err != nil {
 		responseBody.Status = "Failure"
 		responseBody.Details = "Error Creating a new secret"
@@ -81,7 +88,14 @@ func (s *ServiceHandler) GetSecret(c *gin.Context) {
 		c.JSON(http.StatusNotFound, responseBody)
 		return
 	}
-
+	message, err := utils.Decrypt(secret.Secret)
+	if err != nil {
+		responseBody.Status = "Failure"
+		responseBody.Details = "Something went wrong while fetching secret"
+		c.JSON(http.StatusNotFound, responseBody)
+		return
+	}
+	secret.Secret = message
 	if time.Now().UTC().Sub(secret.ExpiresAt) >= 0 || secret.Viewed {
 		responseBody.Status = "Failure"
 		responseBody.Details = "Secret Expired or Already Viewed"
